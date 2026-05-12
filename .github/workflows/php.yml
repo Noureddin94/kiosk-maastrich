@@ -1,39 +1,92 @@
-name: PHP Composer
+name: CI — Kiosk Maastricht
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main, develop]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 permissions:
   contents: read
 
 jobs:
-  build:
-
+  # ── Lint & Static Analysis ──────────────────────────────────────────────────
+  php-lint:
+    name: PHP Lint (8.2)
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: php-cs-fixer, phpstan
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Check PHP syntax on all files
+        run: find . -name "*.php" -not -path "./vendor/*" | xargs -I{} php -l {}
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      - name: PHP CS Fixer (dry-run)
+        run: php-cs-fixer fix --dry-run --diff --rules=@PSR12
+        continue-on-error: true  # report only, don't fail the build yet
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
+  # ── Security Audit ──────────────────────────────────────────────────────────
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
 
-    # - name: Run test suite
-    #   run: composer run-script test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for hardcoded secrets
+        run: |
+          # Fail if any PHP file (outside config examples) contains a raw password
+          if grep -r --include="*.php" \
+               -E "(DB_PASSWORD|password)\s*=\s*['\"][^'\"]{4,}" \
+               --exclude-dir=vendor . | grep -v ".env.example"; then
+            echo "::error::Hardcoded credentials detected!"
+            exit 1
+          fi
+          echo "No hardcoded secrets found."
+
+      - name: Check .env is gitignored
+        run: |
+          if git ls-files --error-unmatch admin/config/.env 2>/dev/null; then
+            echo "::error::.env file is tracked by git — remove it immediately!"
+            exit 1
+          fi
+          echo ".env is correctly ignored."
+
+  # ── Validate Web Assets ─────────────────────────────────────────────────────
+  validate-assets:
+    name: Validate JS & Manifest
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate manifest.json
+        run: node -e "JSON.parse(require('fs').readFileSync('manifest.json','utf8')); console.log('manifest.json is valid JSON')"
+
+      - name: Validate site.webmanifest
+        run: node -e "JSON.parse(require('fs').readFileSync('site.webmanifest','utf8')); console.log('site.webmanifest is valid JSON')"
+
+      - name: Check service worker syntax
+        run: node --check sw_cached_site.js && echo "sw_cached_site.js syntax OK"
+
+  # ── Deployment Notification (main branch only) ──────────────────────────────
+  notify:
+    name: Deployment Ready
+    runs-on: ubuntu-latest
+    needs: [php-lint, security, validate-assets]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: All checks passed
+        run: echo "✅ All checks passed. Ready to deploy to production."
