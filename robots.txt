@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /init.php
+Disallow: /admin/
+Disallow: /admin/login.php
+
+Allow: /$
+Allow: /?lang=en$
+Allow: /?lang=nl$
+
+Sitemap: https://www.kioskmaastricht.nl/sitemap.xml
