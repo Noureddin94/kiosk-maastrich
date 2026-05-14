@@ -29,8 +29,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="manifest" href="manifest.json">
     <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
     <link rel="icon" type="image/x-icon" href="https://www.kioskmaastricht.nl/favicon.ico">
     <meta name="msapplication-TileColor" content="#da532c">
@@ -90,7 +90,7 @@
     <!-- End JSON-LD Structured Data -->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XF9PE2MRP"></script>
-    <script>
+    <!-- <script>
         window.dataLayer = window.dataLayer || [];
 
         function gtag() {
@@ -99,11 +99,11 @@
         gtag('js', new Date());
 
         gtag('config', 'G-0XF9PE2MRP');
-    </script>
+    </script> -->
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RQKCCS1ZX5"></script>
-    <script>
+    <!-- <script>
         window.dataLayer = window.dataLayer || [];
 
         function gtag() {
@@ -112,7 +112,7 @@
         gtag('js', new Date());
 
         gtag('config', 'G-RQKCCS1ZX5');
-    </script>
+    </script> -->
 </head>
 
 <body>

@@ -2,7 +2,8 @@
 .env
 admin/config/.env
 admin/connect.php          # old hardcoded credentials file — delete this
- 
+admin/config/db.php
+
 # ── IDE & OS files ─────────────────────────────────────────────────────────────
 .htaccess
 .DS_Store
@@ -10,18 +11,18 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
- 
+
 # ── Uploads (user content — do not commit) ────────────────────────────────────
 layout/images/blog/*
 layout/videos/video/*
 !layout/images/blog/.gitkeep
 !layout/videos/video/.gitkeep
- 
+
 # ── PHP dependencies ───────────────────────────────────────────────────────────
 vendor/
- 
+
 # ── Docker runtime ─────────────────────────────────────────────────────────────
 docker/data/
- 
+
 # ── Logs ───────────────────────────────────────────────────────────────────────
 *.log

@@ -99,7 +99,7 @@ function input_data($data)
     <div class="row" data-aos="fade-left" data-aos-duration="1000" data-aos-offset="200" data-aos-delay="500">
         <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.2507112016424!2d5.694094015900669!3d50.84504146673449!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0e9f858c0498d%3A0x236777db6886833e!2sKiosk%20Stadspark!5e0!3m2!1sen!2snl!4v1647794891369!5m2!1sen!2snl" allowfullscreen="" title="Kiosk-Stadpark"></iframe>
         <?php
-        session_start();
+        // session_start();
         if (empty($_SESSION['token'])) {
             $_SESSION['token'] = bin2hex(random_bytes(32));
         }

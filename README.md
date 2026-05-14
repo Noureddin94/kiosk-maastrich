@@ -1,6 +1,8 @@
 # KIOSK STADPARK MAASTRICHT Restaurant
 
-This is a Restaurant Theme Website Template, designed using html, css, javascript and php. It was developed while teaching "Responsive Web Design".
+🥗 Kiosk Stadspark Maastricht
+Restaurant website for Kiosk Stadspark Maastricht — a bilingual (NL/EN) PHP website with an admin panel for managing food menu items, categories, and a photo/video blog gallery.
+Live site: kioskmaastricht.nl
 
 ## Technologies Used
 
