@@ -28,3 +28,4 @@ docker/data/
 *.log
 
 footer.php
+admin/connect.php
